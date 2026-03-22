@@ -128,6 +128,7 @@ section { padding: 80px 20px; }
   border: 3px solid var(--teal);
   box-shadow: 0 0 60px rgba(59,165,181,0.3), 0 0 120px rgba(59,165,181,0.1);
   animation: pulse 4s ease-in-out infinite;
+  background: var(--dark);
 }
 .logo-container img { width: 100%; height: 100%; object-fit: cover; }
 
