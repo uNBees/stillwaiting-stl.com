@@ -121,16 +121,14 @@ section { padding: 80px 20px; }
 }
 .hero-inner { position: relative; z-index: 1; }
 
-.logo-container {
-  width: 280px; height: 280px;
-  border-radius: 50%; overflow: hidden;
+.logo-img {
+  width: 300px; height: 300px;
   margin: 0 auto 30px;
-  border: 3px solid var(--teal);
-  box-shadow: 0 0 60px rgba(59,165,181,0.3), 0 0 120px rgba(59,165,181,0.1);
+  object-fit: contain;
+  border-radius: 20px;
+  filter: drop-shadow(0 0 40px rgba(59,165,181,0.3));
   animation: pulse 4s ease-in-out infinite;
-  background: var(--dark);
 }
-.logo-container img { width: 135%; height: 135%; object-fit: cover; object-position: center; margin: -17.5% 0 0 -17.5%; }
 
 @keyframes pulse {
   0%, 100% { box-shadow: 0 0 60px rgba(59,165,181,0.3), 0 0 120px rgba(59,165,181,0.1); }
