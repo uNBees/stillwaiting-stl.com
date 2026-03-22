@@ -125,7 +125,7 @@ section { padding: 80px 20px; }
   width: 300px; height: 300px;
   margin: 0 auto 30px;
   object-fit: contain;
-  border-radius: 20px;
+  border-radius: 0;
   filter: drop-shadow(0 0 40px rgba(59,165,181,0.3));
   animation: pulse 4s ease-in-out infinite;
 }
