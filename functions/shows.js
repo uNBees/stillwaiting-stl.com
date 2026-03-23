@@ -1,6 +1,4 @@
-const ADMIN_PASSWORD = "stillwaiting2026";
-
-export async function onRequestGet({ env }) {
+export async function onRequest({ env }) {
   try {
     const { results } = await env.DB.prepare(
       "SELECT * FROM shows ORDER BY date ASC"
@@ -9,57 +7,4 @@ export async function onRequestGet({ env }) {
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 });
   }
-}
-
-export async function onRequestPost({ request, env }) {
-  const auth = request.headers.get("Authorization");
-  if (!auth || auth !== `Bearer ${ADMIN_PASSWORD}`) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  try {
-    const { date, venue, city, details, status } = await request.json();
-
-    if (!date || !venue || !city) {
-      return Response.json({ error: "date, venue, and city are required" }, { status: 400 });
-    }
-
-    const result = await env.DB.prepare(
-      "INSERT INTO shows (date, venue, city, details, status) VALUES (?, ?, ?, ?, ?)"
-    ).bind(date, venue, city, details || "", status || "upcoming").run();
-
-    return Response.json({ success: true, id: result.meta.last_row_id }, { status: 201 });
-  } catch (err) {
-    return Response.json({ error: err.message }, { status: 500 });
-  }
-}
-
-export async function onRequestDelete({ request, env }) {
-  const auth = request.headers.get("Authorization");
-  if (!auth || auth !== `Bearer ${ADMIN_PASSWORD}`) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  try {
-    const { id } = await request.json();
-
-    if (!id) {
-      return Response.json({ error: "id is required" }, { status: 400 });
-    }
-
-    await env.DB.prepare("DELETE FROM shows WHERE id = ?").bind(id).run();
-    return Response.json({ success: true });
-  } catch (err) {
-    return Response.json({ error: err.message }, { status: 500 });
-  }
-}
-
-export async function onRequestOptions() {
-  return new Response(null, {
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization"
-    }
-  });
 }
