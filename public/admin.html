@@ -35,18 +35,22 @@
       display: block; margin-top: 14px; margin-bottom: 4px;
       font-size: 14px; color: var(--gold);
     }
-    input, select {
+    input, textarea {
       width: 100%; padding: 10px 12px;
       background: var(--dark2);
       border: 1px solid rgba(59,165,181,0.3);
       color: var(--cream);
       font-size: 15px;
+      font-family: 'Segoe UI', sans-serif;
       outline: none;
     }
-    input:focus, select:focus {
+    input:focus, textarea:focus {
       border-color: var(--teal);
     }
-    select option { background: var(--dark2); color: var(--cream); }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
 
     .btn {
       display: inline-block; padding: 10px 24px;
@@ -70,7 +74,7 @@
     .show-item:hover { border-color: var(--teal); }
     .show-details { flex: 1; }
     .show-details strong { color: var(--cream); font-size: 15px; }
-    .show-details span { display: block; font-size: 13px; color: var(--gold); margin-top: 2px; }
+    .show-details span { display: block; font-size: 13px; color: var(--gold); margin-top: 2px; white-space: pre-line; }
     .show-date-badge {
       font-size: 13px; color: var(--teal);
       min-width: 90px; text-align: center; margin-right: 14px;
@@ -114,13 +118,7 @@
     <input type="text" id="show-city" placeholder="e.g. St. Louis, MO">
 
     <label for="show-details">Details (optional)</label>
-    <input type="text" id="show-details" placeholder="e.g. 8pm, $10 cover">
-
-    <label for="show-status">Status</label>
-    <select id="show-status">
-      <option value="upcoming">Upcoming</option>
-      <option value="tba">TBA</option>
-    </select>
+    <textarea id="show-details" placeholder="e.g. Doors open at 7:00 p.m.&#10;Show starts at 8:00 p.m.&#10;$10 cover"></textarea>
 
     <button class="btn btn-teal" onclick="addShow()">Add Show</button>
     <div id="add-msg" class="msg"></div>
@@ -137,7 +135,6 @@
 
     function login() {
       token = document.getElementById("password").value;
-      // Test the token by trying to load shows
       document.getElementById("login-section").style.display = "none";
       document.getElementById("app-section").style.display = "block";
       loadShows();
@@ -159,7 +156,7 @@
             <div class="show-date-badge">${formatDate(s.date)}</div>
             <div class="show-details">
               <strong>${escHtml(s.venue)}</strong>
-              <span>${escHtml(s.city)}${s.details ? ' — ' + escHtml(s.details) : ''}</span>
+              <span>${escHtml(s.city)}${s.details ? '\n' + escHtml(s.details) : ''}</span>
             </div>
             <button class="btn btn-red" onclick="deleteShow(${s.id})">Delete</button>
           </div>
@@ -175,7 +172,6 @@
       const venue = document.getElementById("show-venue").value;
       const city = document.getElementById("show-city").value;
       const details = document.getElementById("show-details").value;
-      const status = document.getElementById("show-status").value;
 
       if (!date || !venue || !city) {
         showMsg(msg, "Date, venue, and city are required.", "error");
@@ -189,7 +185,7 @@
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
           },
-          body: JSON.stringify({ date, venue, city, details, status })
+          body: JSON.stringify({ date, venue, city, details })
         });
         const data = await res.json();
 

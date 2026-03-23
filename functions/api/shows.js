@@ -18,7 +18,7 @@ export async function onRequestPost({ request, env }) {
   }
 
   try {
-    const { date, venue, city, details, status } = await request.json();
+    const { date, venue, city, details } = await request.json();
 
     if (!date || !venue || !city) {
       return Response.json({ error: "date, venue, and city are required" }, { status: 400 });
@@ -26,7 +26,7 @@ export async function onRequestPost({ request, env }) {
 
     const result = await env.DB.prepare(
       "INSERT INTO shows (date, venue, city, details, status) VALUES (?, ?, ?, ?, ?)"
-    ).bind(date, venue, city, details || "", status || "upcoming").run();
+    ).bind(date, venue, city, details || "", "upcoming").run();
 
     return Response.json({ success: true, id: result.meta.last_row_id }, { status: 201 });
   } catch (err) {

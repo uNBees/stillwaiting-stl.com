@@ -56,8 +56,7 @@ async function loadShows() {
       const d = s.date ? new Date(s.date + 'T00:00:00') : null;
       const day = d ? d.getDate() : 'TBA';
       const month = d ? d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase() : '';
-      const statusClass = s.status === 'upcoming' ? 'status-upcoming' : 'status-tba';
-      const statusLabel = s.status === 'upcoming' ? 'UPCOMING' : 'TBA';
+      const details = s.details ? ' — ' + escHtml(s.details).replace(/\n/g, '<br>') : '';
 
       return `
         <div class="show-card">
@@ -67,9 +66,9 @@ async function loadShows() {
           </div>
           <div class="show-info">
             <h3>${escHtml(s.venue)}</h3>
-            <p>${escHtml(s.city)}${s.details ? ' — ' + escHtml(s.details) : ''}</p>
+            <p>${escHtml(s.city)}${details}</p>
           </div>
-          <span class="show-status ${statusClass}">${statusLabel}</span>
+          <span class="show-status status-upcoming">UPCOMING</span>
         </div>
       `;
     }).join('');
