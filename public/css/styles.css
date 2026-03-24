@@ -313,3 +313,8 @@ footer {
   .show-status { margin-left: 0; margin-top: 10px; }
   section { padding: 60px 16px; }
 }
+
+.nav-logo img {
+  border-radius: 50%;
+  object-fit: cover;
+}
