@@ -26,10 +26,6 @@
     h2 { color: var(--gold); margin: 30px 0 15px; font-size: 18px; }
     p.subtitle { color: rgba(232,213,183,0.5); margin-bottom: 30px; font-size: 14px; }
 
-    /* LOGIN */
-    #login-section { margin-top: 40px; }
-    #app-section { display: none; }
-
     /* FORM */
     label {
       display: block; margin-top: 14px; margin-bottom: 4px;
@@ -97,14 +93,6 @@
   <p class="subtitle">Manage upcoming shows</p>
   <a href="/#shows" style="color: var(--teal); font-size: 14px; text-decoration: none;">← Back to Shows Page</a>
 
-  <!-- LOGIN -->
-  <div id="login-section">
-    <label for="password">Enter admin password</label>
-    <input type="password" id="password" placeholder="Password">
-    <button class="btn btn-teal" onclick="login()">Log In</button>
-    <div id="login-msg" class="msg msg-error"></div>
-  </div>
-
   <!-- APP -->
   <div id="app-section">
 
@@ -132,14 +120,9 @@
 
   <script>
     const API = "/api/shows";
-    let token = "";
 
-    function login() {
-      token = document.getElementById("password").value;
-      document.getElementById("login-section").style.display = "none";
-      document.getElementById("app-section").style.display = "block";
-      loadShows();
-    }
+    // Load shows immediately — Zero Trust handles authentication
+    loadShows();
 
     async function loadShows() {
       try {
@@ -182,10 +165,7 @@
       try {
         const res = await fetch(API, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ date, venue, city, details })
         });
         const data = await res.json();
@@ -212,10 +192,7 @@
       try {
         const res = await fetch(API, {
           method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id })
         });
 

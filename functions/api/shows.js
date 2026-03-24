@@ -1,5 +1,3 @@
-const ADMIN_PASSWORD = "stillwaiting2026";
-
 export async function onRequestGet({ env }) {
   try {
     const { results } = await env.DB.prepare(
@@ -12,11 +10,6 @@ export async function onRequestGet({ env }) {
 }
 
 export async function onRequestPost({ request, env }) {
-  const auth = request.headers.get("Authorization");
-  if (!auth || auth !== `Bearer ${ADMIN_PASSWORD}`) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   try {
     const { date, venue, city, details } = await request.json();
 
@@ -35,11 +28,6 @@ export async function onRequestPost({ request, env }) {
 }
 
 export async function onRequestDelete({ request, env }) {
-  const auth = request.headers.get("Authorization");
-  if (!auth || auth !== `Bearer ${ADMIN_PASSWORD}`) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   try {
     const { id } = await request.json();
 
@@ -59,7 +47,7 @@ export async function onRequestOptions() {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization"
+      "Access-Control-Allow-Headers": "Content-Type"
     }
   });
 }
